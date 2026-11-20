@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071113">
+  <meta name="description" content="مِيزاني: دفتر شخصي لتسجيل الدخل والمصاريف والميزانية وأهداف الادخار، بالعربي والجنيه المصري.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071113'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='34' fill='%2369dfc0' font-family='Arial'%3E%D9%85%3C/text%3E%3C/svg%3E">
+  <title>مِيزاني | دفتر الدخل والمصاريف</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="التنقل الرئيسي">
+      <a class="brand" href="#overview" aria-label="مِيزاني">
+        <span class="brand-mark">م</span>
+        <span>
+          <strong data-i18n="appName">مِيزاني</strong>
+          <small data-i18n="appTagline">دفترك الشخصي</small>
+        </span>
+      </a>
+
+      <nav class="nav-list">
+        <button class="nav-button is-active" type="button" data-route="overview">
+          <span class="nav-icon">01</span><span data-i18n="navOverview">نظرة عامة</span>
+        </button>
+        <button class="nav-button" type="button" data-route="transactions">
+          <span class="nav-icon">02</span><span data-i18n="navTransactions">الحركات</span>
+        </button>
+        <button class="nav-button" type="button" data-route="budget">
+          <span class="nav-icon">03</span><span data-i18n="navBudget">الميزانية</span>
+        </button>
+        <button class="nav-button" type="button" data-route="goals">
+          <span class="nav-icon">04</span><span data-i18n="navGoals">الأهداف</span>
+        </button>
+        <button class="nav-button" type="button" data-route="analytics">
+          <span class="nav-icon">05</span><span data-i18n="navAnalytics">التحليلات</span>
+        </button>
+        <button class="nav-button" type="button" data-route="settings">
+          <span class="nav-icon">06</span><span data-i18n="navSettings">الإعدادات</span>
+        </button>
+      </nav>
+
+      <div class="local-note">
+        <span class="pulse" aria-hidden="true"></span>
+        <div>
+          <strong data-i18n="localMode">وضع محلي</strong>
+          <p data-i18n="localModeText">بياناتك تتحفظ في متصفح هذا الجهاز فقط.</p>
+        </div>
+      </div>
+    </aside>
+
+    <header class="mobile-header">
+      <a class="brand compact" href="#overview" aria-label="مِيزاني">
+        <span class="brand-mark">م</span>
+        <strong data-i18n="appName">مِيزاني</strong>
+      </a>
+      <span class="storage-pill" data-i18n="localModeShort">محلي على الجهاز</span>
+    </header>
+
+    <main class="main-content" id="main-content">
+      <section class="route is-active" id="route-overview" data-route-panel="overview" aria-labelledby="overview-title">
+        <div class="page-heading hero-card">
+          <div>
+            <p class="eyebrow" data-i18n="overviewEyebrow">لوحة التحكم</p>
+            <h1 id="overview-title" data-i18n="overviewTitle">فلوسك واضحة، قرارك أهدى.</h1>
+            <p class="lede" data-i18n="overviewIntro">سجّل الدخل والمصاريف بنفسك، وراقب الميزانية والادخار من غير ربط بنكي.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="button primary" type="button" data-go="transactions" data-i18n="addTransaction">إضافة حركة</button>
+            <button class="button ghost" type="button" data-go="goals" data-i18n="addGoal">إضافة هدف</button>
+          </div>
+        </div>
+
+        <div class="stats-grid" aria-live="polite">
+          <article class="stat-card balance-card">
+            <span class="stat-label" data-i18n="totalBalance">الرصيد الكلي</span>
+            <strong id="stat-balance">٠ ج.م</strong>
+            <small id="stat-balance-note">ابدأ بإضافة أول حركة</small>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label" data-i18n="monthIncome">دخل الشهر</span>
+            <strong id="stat-income" class="income-text">٠ ج.م</strong>
+            <small id="stat-income-count">0 حركة</small>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label" data-i18n="monthExpense">مصاريف الشهر</span>
+            <strong id="stat-expense" class="expense-text">٠ ج.م</strong>
+            <small id="stat-expense-count">0 حركة</small>
+          </article>
+          <article class="stat-card ring-card">
+            <div class="ring" id="savings-ring" style="--percent:0" role="img" aria-label="معدل الادخار 0%">
+              <span id="savings-rate">0%</span>
+            </div>
+            <div>
+              <span class="stat-label" data-i18n="savingsRate">معدل الادخار</span>
+              <strong id="stat-saved">٠ ج.م</strong>
+              <small data-i18n="thisMonth">هذا الشهر</small>
+            </div>
+          </article>
+        </div>
+
+        <div class="two-column">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="recentTransactions">أحدث الحركات</p>
+                <h2 data-i18n="whatHappened">آخر ما سجلته</h2>
+              </div>
+              <button class="text-button" type="button" data-go="transactions" data-i18n="viewAll">عرض الكل</button>
+            </div>
+            <div id="recent-list" class="transaction-list compact-list"></div>
+          </article>
+
+          <article class="panel warning-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="privacyTitle">الخصوصية والنسخ</p>
+                <h2 data-i18n="privacyHeading">مفيش حسابات ولا مزامنة</h2>
+              </div>
+            </div>
+            <ul class="check-list">
+              <li data-i18n="privacyPointOne">تدخل كل مبلغ بنفسك؛ التطبيق لا يتصل بالبنك ولا يحرك أموالًا.</li>
+              <li data-i18n="privacyPointTwo">البيانات تبقى في متصفح هذا الجهاز، ولا تنتقل تلقائيًا لموبايل أو كمبيوتر آخر.</li>
+              <li data-i18n="privacyPointThree">حمّل نسخة JSON من الإعدادات بشكل دوري حتى لا تضيع البيانات عند مسح المتصفح.</li>
+            </ul>
+            <button class="button secondary" type="button" data-go="settings" data-i18n="backupNow">تنزيل نسخة احتياطية</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="route" id="route-transactions" data-route-panel="transactions" aria-labelledby="transactions-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" data-i18n="transactionsEyebrow">السجل</p>
+            <h1 id="transactions-title" data-i18n="transactionsTitle">الدخل والمصاريف</h1>
+            <p class="lede" data-i18n="transactionsIntro">كل حركة تتسجل يدويًا بتاريخها وفئتها وملاحظة اختيارية.</p>
+          </div>
+        </div>
+
+        <article class="panel form-panel" aria-labelledby="transaction-form-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="newRecord">تسجيل جديد</p>
+              <h2 id="transaction-form-title" data-i18n="addTransaction">إضافة حركة</h2>
+            </div>
+            <button class="text-button hidden" id="cancel-edit" type="button" data-i18n="cancelEdit">إلغاء التعديل</button>
+          </div>
+
+          <form id="transaction-form" novalidate>
+            <fieldset class="segmented" aria-label="نوع الحركة">
+              <legend class="sr-only" data-i18n="transactionType">نوع الحركة</legend>
+              <label>
+                <input type="radio" name="type" value="expense" checked>
+                <span data-i18n="expense">مصروف</span>
+              </label>
+              <label>
+                <input type="radio" name="type" value="income">
+                <span data-i18n="income">دخل</span>
+              </label>
+            </fieldset>
+
+            <div class="form-grid">
+              <label class="field">
+                <span data-i18n="amount">المبلغ</span>
+                <input id="transaction-amount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00" required>
+              </label>
+              <label class="field">
+                <span data-i18n="category">الفئة</span>
+                <select id="transaction-category" name="category" required></select>
+              </label>
+              <label class="field">
+                <span data-i18n="date">التاريخ</span>
+                <input id="transaction-date" name="date" type="date" required>
+              </label>
+              <label class="field wide">
+                <span data-i18n="note">ملاحظة</span>
+                <input id="transaction-note" name="note" type="text" maxlength="120" data-i18n-placeholder="notePlaceholder" placeholder="مثال: مشوار، مرتب، فاتورة">
+              </label>
+            </div>
+            <p class="form-error" id="transaction-error" role="alert"></p>
+            <button class="button primary" type="submit" id="transaction-submit" data-i18n="saveTransaction">حفظ الحركة</button>
+          </form>
+        </article>
+
+        <article class="panel" aria-labelledby="history-title">
+          <div class="panel-heading history-heading">
+            <div>
+              <p class="eyebrow" data-i18n="history">السجل الكامل</p>
+              <h2 id="history-title" data-i18n="allTransactions">كل الحركات</h2>
+            </div>
+            <div class="filters" aria-label="فلاتر الحركات">
+              <select id="filter-type" aria-label="فلتر النوع">
+                <option value="all" data-i18n="allTypes">الكل</option>
+                <option value="income" data-i18n="income">دخل</option>
+                <option value="expense" data-i18n="expense">مصروف</option>
+              </select>
+              <select id="filter-category" aria-label="فلتر الفئة">
+                <option value="all" data-i18n="allCategories">كل الفئات</option>
+              </select>
+              <input id="filter-month" type="month" aria-label="فلتر الشهر">
+              <input id="filter-search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث في الملاحظات" aria-label="بحث">
+            </div>
+          </div>
+          <div id="transaction-list" class="transaction-list"></div>
+        </article>
+      </section>
+
+      <section class="route" id="route-budget" data-route-panel="budget" aria-labelledby="budget-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" data-i18n="budgetEyebrow">حدود الشهر</p>
+            <h1 id="budget-title" data-i18n="budgetTitle">الميزانية</h1>
+            <p class="lede" data-i18n="budgetIntro">حدد سقف مصاريف الشهر، وشوف الفاضل قبل ما الشهر يخلص.</p>
+          </div>
+        </div>
+
+        <div class="two-column budget-layout">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="monthlyLimit">الحد الشهري</p>
+                <h2 data-i18n="spendingCeiling">سقف المصاريف</h2>
+              </div>
+            </div>
+            <form id="budget-form" class="inline-form" novalidate>
+              <label class="field">
+                <span data-i18n="monthlyLimit">الحد الشهري</span>
+                <input id="budget-limit" type="number" min="1" step="0.01" inputmode="decimal" placeholder="مثال: 8000">
+              </label>
+              <button class="button primary" type="submit" data-i18n="saveBudget">حفظ الحد</button>
+              <button class="button ghost" type="button" id="clear-budget" data-i18n="clear">مسح</button>
+            </form>
+            <div class="budget-meter">
+              <div class="meter-top">
+                <span id="budget-spent">٠ ج.م</span>
+                <span id="budget-percent">0%</span>
+              </div>
+              <div class="progress-track" aria-hidden="true"><span id="budget-progress"></span></div>
+              <p id="budget-message" class="muted"></p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="ruleEyebrow">حاسبة سريعة</p>
+                <h2><span data-i18n="ruleName">قاعدة</span> <bdi>50 / 30 / 20</bdi></h2>
+              </div>
+              <button class="text-button" type="button" id="use-month-income" data-i18n="useMonthIncome">استخدم دخل الشهر</button>
+            </div>
+            <label class="field">
+              <span data-i18n="monthlyIncome">الدخل الشهري</span>
+              <input id="rule-income" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+            </label>
+            <div class="rule-grid">
+              <div><span data-i18n="needs">احتياجات 50%</span><strong id="rule-needs">٠ ج.م</strong></div>
+              <div><span data-i18n="wants">رغبات 30%</span><strong id="rule-wants">٠ ج.م</strong></div>
+              <div><span data-i18n="savings">ادخار 20%</span><strong id="rule-savings">٠ ج.م</strong></div>
+            </div>
+            <p class="muted" data-i18n="ruleNote">القاعدة مرشد عام، وليست نصيحة مالية شخصية.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="route" id="route-goals" data-route-panel="goals" aria-labelledby="goals-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" data-i18n="goalsEyebrow">الادخار</p>
+            <h1 id="goals-title" data-i18n="goalsTitle">أهداف الادخار</h1>
+            <p class="lede" data-i18n="goalsIntro">قسّم ما تدخره لأهداف واضحة، وحدث المبلغ المدخر يدويًا كل مرة.</p>
+          </div>
+        </div>
+
+        <article class="panel form-panel" aria-labelledby="goal-form-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="newGoal">هدف جديد</p>
+              <h2 id="goal-form-title" data-i18n="addGoal">إضافة هدف</h2>
+            </div>
+            <button class="text-button hidden" id="cancel-goal-edit" type="button" data-i18n="cancelEdit">إلغاء التعديل</button>
+          </div>
+          <form id="goal-form" novalidate>
+            <div class="form-grid goal-grid">
+              <label class="field wide">
+                <span data-i18n="goalName">اسم الهدف</span>
+                <input id="goal-name" type="text" maxlength="60" data-i18n-placeholder="goalPlaceholder" placeholder="مثال: لابتوب، سفر، طوارئ" required>
+              </label>
+              <label class="field">
+                <span data-i18n="targetAmount">المبلغ المستهدف</span>
+                <input id="goal-target" type="number" min="1" step="0.01" inputmode="decimal" placeholder="0.00" required>
+              </label>
+              <label class="field">
+                <span data-i18n="savedAmount">المدخر حاليًا</span>
+                <input id="goal-saved" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+              </label>
+              <label class="field">
+                <span data-i18n="monthlySaving">ادخار شهري متوقع</span>
+                <input id="goal-monthly" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+              </label>
+            </div>
+            <p class="form-error" id="goal-error" role="alert"></p>
+            <button class="button primary" type="submit" id="goal-submit" data-i18n="saveGoal">حفظ الهدف</button>
+          </form>
+        </article>
+
+        <div id="goals-list" class="goals-grid"></div>
+      </section>
+
+      <section class="route" id="route-analytics" data-route-panel="analytics" aria-labelledby="analytics-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" data-i18n="analyticsEyebrow">الأرقام</p>
+            <h1 id="analytics-title" data-i18n="analyticsTitle">التحليلات</h1>
+            <p class="lede" data-i18n="analyticsIntro">رسوم بيانية بسيطة توضح التدفق والفئات الأعلى صرفًا.</p>
+          </div>
+          <div class="period-switch" role="group" aria-label="الفترة">
+            <button type="button" data-period="3">3 <span data-i18n="months">شهور</span></button>
+            <button type="button" data-period="6" class="is-active">6 <span data-i18n="months">شهور</span></button>
+            <button type="button" data-period="12">12 <span data-i18n="monthSingular">شهر</span></button>
+            <button type="button" data-period="all" data-i18n="allTime">كل الوقت</button>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="cashflow">التدفق النقدي</p>
+                <h2 id="cashflow-title">آخر 6 شهور</h2>
+              </div>
+              <div class="legend">
+                <span><i class="income-dot"></i><b data-i18n="income">دخل</b></span>
+                <span><i class="expense-dot"></i><b data-i18n="expense">مصروف</b></span>
+              </div>
+            </div>
+            <div id="cashflow-chart" class="chart-box"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="categoryBreakdown">توزيع المصاريف</p>
+                <h2 data-i18n="topCategories">الفئات الأعلى</h2>
+              </div>
+            </div>
+            <div id="category-chart" class="category-chart"></div>
+          </article>
+        </div>
+
+        <div class="stats-grid analytics-stats">
+          <article class="stat-card"><span class="stat-label" data-i18n="periodIncome">دخل الفترة</span><strong id="analytics-income">٠ ج.م</strong></article>
+          <article class="stat-card"><span class="stat-label" data-i18n="periodExpense">مصاريف الفترة</span><strong id="analytics-expense">٠ ج.م</strong></article>
+          <article class="stat-card"><span class="stat-label" data-i18n="periodSaved">مدخر الفترة</span><strong id="analytics-saved">٠ ج.م</strong></article>
+          <article class="stat-card"><span class="stat-label" data-i18n="topCategory">أعلى فئة</span><strong id="analytics-top-category">—</strong></article>
+        </div>
+      </section>
+
+      <section class="route" id="route-settings" data-route-panel="settings" aria-labelledby="settings-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" data-i18n="settingsEyebrow">التحكم</p>
+            <h1 id="settings-title" data-i18n="settingsTitle">الإعدادات والنسخ</h1>
+            <p class="lede" data-i18n="settingsIntro">غيّر الشكل واللغة، وحمّل بياناتك أو استرجعها عند الحاجة.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow" data-i18n="appearance">المظهر</p><h2 data-i18n="displaySettings">العرض واللغة</h2></div></div>
+            <div class="setting-row">
+              <span data-i18n="language">اللغة</span>
+              <div class="segmented small" role="group" aria-label="اللغة">
+                <button type="button" data-setting-lang="ar" class="is-active">العربية</button>
+                <button type="button" data-setting-lang="en">English</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span data-i18n="theme">السمة</span>
+              <div class="segmented small" role="group" aria-label="السمة">
+                <button type="button" data-setting-theme="dark" class="is-active" data-i18n="dark">غامق</button>
+                <button type="button" data-setting-theme="light" data-i18n="light">فاتح</button>
+              </div>
+            </div>
+            <label class="field">
+              <span data-i18n="currency">العملة</span>
+              <select id="currency-select">
+                <option value="EGP">الجنيه المصري (EGP)</option>
+                <option value="USD">الدولار الأمريكي (USD)</option>
+                <option value="SAR">الريال السعودي (SAR)</option>
+                <option value="AED">الدرهم الإماراتي (AED)</option>
+              </select>
+            </label>
+            <p class="muted" data-i18n="currencyNote">تغيير العملة يغيّر طريقة العرض فقط ولا يحوّل القيم.</p>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow" data-i18n="data">البيانات</p><h2 data-i18n="backupRestore">النسخ والاسترجاع</h2></div></div>
+            <div class="action-stack">
+              <button class="button secondary" type="button" id="export-csv" data-i18n="exportCsv">تصدير الحركات CSV</button>
+              <button class="button secondary" type="button" id="export-json" data-i18n="exportJson">تنزيل نسخة JSON</button>
+              <label class="button ghost file-button" for="restore-json" data-i18n="restoreJson">استرجاع نسخة JSON</label>
+              <input class="sr-only" id="restore-json" type="file" accept="application/json,.json">
+            </div>
+            <div class="storage-box">
+              <strong data-i18n="storageStatus">حالة التخزين</strong>
+              <p id="storage-message" data-i18n="storageReady">التخزين المحلي جاهز.</p>
+            </div>
+          </article>
+
+          <article class="panel danger-panel">
+            <div class="panel-heading"><div><p class="eyebrow" data-i18n="dangerZone">منطقة حساسة</p><h2 data-i18n="resetData">مسح البيانات</h2></div></div>
+            <p data-i18n="resetWarning">يمسح هذا كل الحركات والأهداف والإعدادات من متصفح هذا الجهاز. حمّل نسخة احتياطية أولًا.</p>
+            <button class="button danger" type="button" id="reset-data" data-i18n="resetAll">مسح كل البيانات</button>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="تنقل سريع">
+    <button class="is-active" type="button" data-route="overview" data-i18n="navShortOverview">نظرة</button>
+    <button type="button" data-route="transactions" data-i18n="navShortTransactions">حركات</button>
+    <button type="button" data-route="budget" data-i18n="navShortBudget">ميزانية</button>
+    <button type="button" data-route="goals" data-i18n="navShortGoals">أهداف</button>
+    <button type="button" data-route="analytics" data-i18n="navShortAnalytics">تحليل</button>
+    <button type="button" data-route="settings" data-i18n="navShortSettings">إعدادات</button>
+  </nav>
+
+  <div class="modal-backdrop hidden" id="confirm-modal" role="presentation">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+      <p class="eyebrow" data-i18n="confirm">تأكيد</p>
+      <h2 id="confirm-title"></h2>
+      <p id="confirm-message"></p>
+      <div class="modal-actions">
+        <button class="button ghost" type="button" id="confirm-cancel" data-i18n="cancel">إلغاء</button>
+        <button class="button danger" type="button" id="confirm-ok" data-i18n="confirmAction">تأكيد</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="app.js" defer></script>
+</body>
+                  </html>
